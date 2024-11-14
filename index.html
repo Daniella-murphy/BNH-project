@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bear Ninja Hunter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #444;
+        }
+
+        #results {
+            margin-top: 20px;
+            background-color: #fff;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>Bear Ninja Hunter Game</h1>
+    <div id="results"></div>
+    <script>
+        // Store game choice options in an array
+        const choices = ["Bear", "Ninja", "Hunter"];
+
+        // Function to standardize input to forced case
+        const toForcedCase = (str) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+
+        // Function to start the game
+        const startGame = () => {
+            let playerName = prompt("Welcome to Bear Ninja Hunter! What's your name?");
+            if (playerName) {
+                alert(`Hello, ${playerName}! Let's play Bear Ninja Hunter.`);
+                playGame(playerName);
+            } else {
+                alert("Game canceled. Please provide your name to play.");
+            }
+        };
+
+        // Function to play the game
+        const playGame = (playerName) => {
+            let playAgain = true;
+            while (playAgain) {
+                let playerChoice = prompt("Please enter Bear, Ninja, or Hunter:");
+                if (!playerChoice) {
+                    alert("Invalid input. Please enter Bear, Ninja, or Hunter.");
+                    continue;
+                }
+                playerChoice = toForcedCase(playerChoice);
+
+                if (!choices.includes(playerChoice)) {
+                    alert("Invalid input. Please enter Bear, Ninja, or Hunter.");
+                    continue;
+                }
+
+                let computerChoice = choices[Math.floor(Math.random() * choices.length)];
+
+                // Countdown from 3 to 0
+                console.log("Countdown:");
+                for (let i = 3; i >= 0; i--) {
+                    console.log(i);
+                }
+
+                let resultMessage = `You chose ${playerChoice}. The computer chose ${computerChoice}. `;
+                if (playerChoice === computerChoice) {
+                    resultMessage += "It's a tie!";
+                } else if (
+                    (playerChoice === "Bear" && computerChoice === "Ninja") ||
+                    (playerChoice === "Ninja" && computerChoice === "Hunter") ||
+                    (playerChoice === "Hunter" && computerChoice === "Bear")
+                ) {
+                    resultMessage += `${playerName} wins!`;
+                } else {
+                    resultMessage += "The computer wins!";
+                }
+
+                alert(resultMessage);
+                document.getElementById('results').innerHTML += `<p>${resultMessage}</p>`;
+
+                let playAgainPrompt = prompt("Do you want to play again? (y/n)");
+                if (playAgainPrompt.toLowerCase() !== 'y') {
+                    playAgain = false;
+                    alert("Thank you for playing! Goodbye!");
+                }
+            }
+        };
+
+        // Start the game when the page loads
+        window.onload = startGame;
+    </script>
+</body>
+</html>
