@@ -12,36 +12,27 @@
         // Store game choice options in an array
         const choices = ["Bear", "Ninja", "Hunter"];
 
-        // Function to standardize input to forced case
-        const toForcedCase = (str) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-
-        // Function to start the game
-        const startGame = () => {
-            let playerName = prompt("Welcome to Bear Ninja Hunter! What's your name?");
-            if (playerName) {
-                alert(`Hello, ${playerName}! Let's play Bear Ninja Hunter.`);
-                playGame(playerName);
-            } else {
-                alert("Game canceled. Please provide your name to play.");
-            }
-        };
-
-        // Function to play the game
-        const playGame = (playerName) => {
-            let playAgain = true;
-            while (playAgain) {
+        // Start the game
+        let playerName = prompt("Welcome to Bear Ninja Hunter! What's your name?");
+        if (playerName) {
+            playerName = playerName.charAt(0).toUpperCase() + playerName.slice(1).toLowerCase();
+            alert(`Hello, ${playerName}! Let's play Bear Ninja Hunter.`);
+            let playAgain;
+            do {
+                // Get player choice
                 let playerChoice = prompt("Please enter Bear, Ninja, or Hunter:");
                 if (!playerChoice) {
                     alert("Invalid input. Please enter Bear, Ninja, or Hunter.");
                     continue;
                 }
-                playerChoice = toForcedCase(playerChoice);
+                playerChoice = playerChoice.charAt(0).toUpperCase() + playerChoice.slice(1).toLowerCase();
 
                 if (!choices.includes(playerChoice)) {
                     alert("Invalid input. Please enter Bear, Ninja, or Hunter.");
                     continue;
                 }
 
+                // Get computer choice
                 let computerChoice = choices[Math.floor(Math.random() * choices.length)];
 
                 // Countdown from 3 to 0
@@ -50,32 +41,31 @@
                     console.log(i);
                 }
 
+                // Determine the result
                 let resultMessage = `You chose ${playerChoice}. The computer chose ${computerChoice}. `;
-                if (playerChoice === computerChoice) {
-                    resultMessage += "It's a tie!";
-                } else if (
-                    (playerChoice === "Bear" && computerChoice === "Ninja") ||
-                    (playerChoice === "Ninja" && computerChoice === "Hunter") ||
-                    (playerChoice === "Hunter" && computerChoice === "Bear")
-                ) {
-                    resultMessage += `${playerName} wins!`;
-                } else {
-                    resultMessage += "The computer wins!";
+                switch (true) {
+                    case (playerChoice === computerChoice):
+                        resultMessage += "It's a tie!";
+                        break;
+                    case (playerChoice === "Bear" && computerChoice === "Ninja"):
+                    case (playerChoice === "Ninja" && computerChoice === "Hunter"):
+                    case (playerChoice === "Hunter" && computerChoice === "Bear"):
+                        resultMessage += `${playerName} wins!`;
+                        break;
+                    default:
+                        resultMessage += "The computer wins!";
+                        break;
                 }
 
                 alert(resultMessage);
                 document.getElementById('results').innerHTML += `<p>${resultMessage}</p>`;
 
-                let playAgainPrompt = prompt("Do you want to play again? (y/n)");
-                if (playAgainPrompt.toLowerCase() !== 'y') {
-                    playAgain = false;
-                    alert("Thank you for playing! Goodbye!");
-                }
-            }
-        };
-
-        // Start the game when the page loads
-        window.onload = startGame;
+                playAgain = prompt("Do you want to play again? (y/n)");
+            } while (playAgain && playAgain.toLowerCase() === 'y');
+            alert("Thank you for playing! Goodbye!");
+        } else {
+            alert("Game canceled. Please provide your name to play.");
+        }
     </script>
 </body>
 </html>
